@@ -146,7 +146,7 @@
   <div class="connect-box">
     <h2>HYROX <span>COACH</span></h2>
     <p>Verbinde dein Strava-Konto um Live-Trainingsdaten zu laden und deinen persönlichen KI-Coach zu aktivieren.</p>
-    <button class="connect-btn" onclick="connectStrava()">MIT STRAVA VERBINDEN</button>
+    <a class="connect-btn" id="stravaAuthLink" href="#">MIT STRAVA VERBINDEN</a>
     <button class="skip-btn" onclick="skipConnect()">Ohne Strava fortfahren (Demo)</button>
   </div>
 </div>
@@ -606,6 +606,10 @@ function showToast(msg){const t=document.createElement('div');t.className='toast
 // ─── INIT ─────────────────────────────────────────────────────────────
 async function init() {
   renderPlan(getCurrentWeek());
+  // Set Strava auth link now that DOM is ready
+  const authUrl = `https://www.strava.com/oauth/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&approval_prompt=force&scope=read,activity:read_all`;
+  const linkEl = document.getElementById('stravaAuthLink');
+  if(linkEl) linkEl.href = authUrl;
   const params = new URLSearchParams(window.location.search);
   const code = params.get('code');
   if(code){
