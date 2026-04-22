@@ -158,6 +158,7 @@
   </div>
   <div class="logo">HYROX <span>COACH</span></div>
   <div class="header-right">
+    <button class="strava-btn" id="syncBtn" onclick="manualSync()" style="display:none;background:var(--grey);border:1px solid var(--grey2);color:var(--text-muted)">⟳ SYNC</button>
     <button class="strava-btn" id="headerConnectBtn" onclick="connectStrava()">STRAVA VERBINDEN</button>
   </div>
 </header>
@@ -208,11 +209,11 @@
         <div class="section-title">KI COACH</div>
       </div>
       <div class="coach-messages" id="coachMessages">
-        <div class="msg coach">Hey! Ich bin dein Hyrox Coach 🏋️ Sag mir was du heute trainiert hast oder was du morgen planst – ich passe deinen Plan automatisch an!</div>
+        <div class="msg coach">Hey! Schreib mir was du trainiert hast oder was du planst – dann klick auf den Button und Claude öffnet sich mit deinem kompletten Kontext! 💪</div>
       </div>
       <div class="coach-input-row">
-        <input class="coach-input" id="coachInput" placeholder="z.B. heute 8km gelaufen, morgen kein Training..." onkeydown="if(event.key==='Enter')sendToCoach()">
-        <button class="coach-send" id="coachSendBtn" onclick="sendToCoach()">SENDEN</button>
+        <input class="coach-input" id="coachInput" placeholder="z.B. heute 8km in 4:30, morgen kein Training..." onkeydown="if(event.key==='Enter')openCoach()">
+        <button class="coach-send" id="coachSendBtn" onclick="openCoach()">→ COACH</button>
       </div>
     </section>
 
@@ -318,9 +319,12 @@ function renderPlan(week) {
         <div class="workout-tags">${d.tags.map(t=>`<span class="tag ${t}">${t.toUpperCase()}</span>`).join('')}</div>
         <div class="workout-detail">${d.detail}</div>
       </div>
-      <div class="intensity-bar">
-        <div class="intensity-blocks">${blocks}</div>
-        <div class="intensity-label">INT</div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <div class="intensity-bar">
+          <div class="intensity-blocks">${blocks}</div>
+          <div class="intensity-label">INT</div>
+        </div>
+        <button onclick="analyzeWorkout(${week}, ${i})" style="background:none;border:1px solid var(--grey2);color:var(--text-muted);font-family:'DM Mono',monospace;font-size:0.5rem;padding:0.2rem 0.4rem;cursor:pointer;letter-spacing:0.05em;white-space:nowrap;transition:all 0.2s" onmouseover="this.style.borderColor='var(--orange)';this.style.color='var(--orange)'" onmouseout="this.style.borderColor='var(--grey2)';this.style.color='var(--text-muted)'">ANALYSE</button>
       </div>
     </div>`;
   }).join('');
@@ -338,99 +342,73 @@ function updateCountdown(){
 }
 setInterval(updateCountdown,1000); updateCountdown();
 
-// ─── AI COACH ─────────────────────────────────────────────────────────
-const chatHistory = [];
+// ─── AI COACH (via Claude.ai deep link) ──────────────────────────────
+function buildContext() {
+  const athlete = JSON.parse(localStorage.getItem('strava_athlete') || '{}');
+  const name = athlete.firstname || 'Athlet';
+  const strava = localStorage.getItem('strava_recent') || 'nicht verfügbar';
+  const week = getCurrentWeek();
+  const todayPlan = currentPlan[week].find(d => d.day === todayName);
+  return `Du bist mein persönlicher Hyrox-Coach. Hier sind meine Daten:
 
-async function sendToCoach() {
-  const input = document.getElementById('coachInput');
-  const msg = input.value.trim();
-  if (!msg) return;
-
-  input.value = '';
-  document.getElementById('coachSendBtn').disabled = true;
-  addMsg(msg, 'user');
-
-  const typingEl = addMsg('...', 'coach typing');
-
-  // Build plan summary for context
-  const planSummary = JSON.stringify(currentPlan);
-  const stravaActivities = localStorage.getItem('strava_recent') || 'Keine Strava-Daten verfügbar';
-
-  const systemPrompt = `Du bist ein professioneller Hyrox-Coach. Du betreust einen männlichen Athleten unter 30, Hyrox-Anfänger (< 1 Jahr), der in ${getCurrentWeek() === 4 ? 'weniger als 1 Woche' : 4 - getCurrentWeek() + 1 + ' Wochen'} an einem Hyrox-Wettkampf teilnimmt. Sein Lauftempo ist ~4:37/km, er ist sehr gut erholt und trainiert 6x/Woche. 
-
-Aktueller 4-Wochen-Trainingsplan (JSON): ${planSummary}
-
-Strava-Aktivitäten: ${stravaActivities}
-
-Heute ist ${todayName}, Woche ${getCurrentWeek()} von 4.
-
-Wenn der Athlet dir sagt was er trainiert hat oder was er ändern möchte, antworte IMMER in diesem Format:
-1. Kurze Coaching-Antwort (2-3 Sätze, motivierend aber direkt)
-2. Falls eine Planänderung nötig ist, gib am Ende exakt dieses JSON-Block aus (sonst nicht):
-PLAN_UPDATE:{"week":X,"dayIndex":Y,"name":"...","tags":["..."],"intensity":Z,"detail":"..."}
-
-Wobei dayIndex 0=MO, 1=DI, 2=MI, 3=DO, 4=FR, 5=SA, 6=SO.
-Antworte auf Deutsch. Sei präzise, wissenschaftlich fundiert, motivierend.`;
-
-  chatHistory.push({ role: 'user', content: msg });
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system: systemPrompt,
-        messages: chatHistory
-      })
-    });
-
-    const data = await res.json();
-    const reply = data.content?.[0]?.text || 'Fehler beim Verbinden mit dem Coach.';
-
-    chatHistory.push({ role: 'assistant', content: reply });
-
-    // Check for plan update
-    const updateMatch = reply.match(/PLAN_UPDATE:(\{.*\})/s);
-    let displayReply = reply;
-    if (updateMatch) {
-      try {
-        const update = JSON.parse(updateMatch[1]);
-        currentPlan[update.week][update.dayIndex] = {
-          day: currentPlan[update.week][update.dayIndex].day,
-          name: update.name,
-          tags: update.tags,
-          intensity: update.intensity,
-          detail: update.detail
-        };
-        savePlan(currentPlan);
-        renderPlan(getCurrentWeek());
-        displayReply = reply.replace(/PLAN_UPDATE:\{.*\}/s, '✅ Plan wurde automatisch aktualisiert!');
-        showToast('✅ Trainingsplan aktualisiert!');
-      } catch(e) { console.error('Plan parse error', e); }
-    }
-
-    typingEl.textContent = displayReply;
-    typingEl.classList.remove('typing');
-  } catch(e) {
-    typingEl.textContent = 'Verbindungsfehler. Bitte erneut versuchen.';
-    typingEl.classList.remove('typing');
-  }
-
-  document.getElementById('coachSendBtn').disabled = false;
-  const msgs = document.getElementById('coachMessages');
-  msgs.scrollTop = msgs.scrollHeight;
+ATHLET: ${name}, männlich, unter 30, sehr gute Regeneration
+SPORT: Hyrox Doubles Open, Rennen in ${4-week+1} Wochen
+LAUFEN: Ø-Pace ~4:37/km, Marathon absolviert (5:51/km)
+KRAFT: RDL 105kg, Beinpresse 100kg, 2x/Woche Gym
+HYROX: SkiErg @ 2:00/500m, Wall Balls 9kg, regelmäßige Hyrox-Klassen
+AKTUELL: Woche ${week}/4, heute ${todayName}
+HEUTIGER PLAN: ${todayPlan ? todayPlan.name + ' – ' + todayPlan.detail : 'Ruhetag'}
+STRAVA LETZTE WOCHE: ${strava}`;
 }
 
-function addMsg(text, type) {
+function openCoach() {
+  const input = document.getElementById('coachInput');
+  const userMsg = input.value.trim();
+  if (!userMsg) { input.focus(); return; }
+  
+  const context = buildContext();
+  const fullPrompt = context + '
+
+---
+Meine Nachricht: ' + userMsg;
+  const url = 'https://claude.ai/new?q=' + encodeURIComponent(fullPrompt);
+  
+  // Show feedback
   const msgs = document.getElementById('coachMessages');
   const el = document.createElement('div');
-  el.className = `msg ${type}`;
-  el.textContent = text;
+  el.className = 'msg user';
+  el.textContent = userMsg;
   msgs.appendChild(el);
+  
+  const reply = document.createElement('div');
+  reply.className = 'msg coach';
+  reply.innerHTML = '✅ Kontext kopiert! <a href="' + url + '" target="_blank" style="color:var(--orange);text-decoration:underline;font-weight:600">→ Claude öffnen</a>';
+  msgs.appendChild(reply);
   msgs.scrollTop = msgs.scrollHeight;
-  return el;
+  input.value = '';
+  
+  window.open(url, '_blank');
+}
+
+function analyzeWorkout(week, dayIndex) {
+  const d = currentPlan[week][dayIndex];
+  const context = buildContext();
+  const prompt = context + '
+
+---
+Bitte analysiere und bewerte dieses geplante Workout detailliert:
+
+Tag: ' + d.day + ', Woche ' + week + '/4
+Workout: ' + d.name + '
+Detail: ' + d.detail + '
+
+Gib mir:
+1. Warum dieses Workout in dieser Phase Sinn macht (wissenschaftliche Begründung)
+2. Wie ich es optimal ausführe (Tipps, Fehler vermeiden)
+3. Was ich danach für die Regeneration tun soll
+4. Wie ich weiß ob es gut gelaufen ist (Erfolgskriterien)';
+  const url = 'https://claude.ai/new?q=' + encodeURIComponent(prompt);
+  window.open(url, '_blank');
 }
 
 // ─── STRAVA ──────────────────────────────────────────────────────────
@@ -471,12 +449,22 @@ async function getValidToken() {
   return null;
 }
 
+async function manualSync() {
+  const token = await getValidToken();
+  if(!token) return;
+  document.getElementById('syncBtn').textContent='⟳ ...';
+  await loadStravaData(token);
+  document.getElementById('syncBtn').textContent='⟳ SYNC';
+  showToast('✅ Strava synchronisiert!');
+}
+
 async function loadStravaData(token) {
   document.getElementById('connectOverlay').style.display='none';
   document.getElementById('statusDot').classList.add('live');
   document.getElementById('statusText').textContent='STRAVA LIVE';
   document.getElementById('headerConnectBtn').textContent='✓ VERBUNDEN';
   document.getElementById('headerConnectBtn').style.background='var(--green)';
+  document.getElementById('syncBtn').style.display='inline-block';
   const athlete = JSON.parse(localStorage.getItem('strava_athlete')||'{}');
   if(athlete.firstname) document.getElementById('athleteDesc').textContent=`Hey ${athlete.firstname}! Chatte mit deinem KI-Coach – erzähl ihm was du trainiert hast und der Plan passt sich automatisch an.`;
   try {
@@ -490,26 +478,111 @@ async function loadStravaData(token) {
   } catch(e){loadDemoData();}
 }
 
+function matchActivityToPlan(activity) {
+  const actDate = new Date(activity.start_date);
+  const dayIdx = [0,1,2,3,4,5,6].find(i => {
+    const dayNames2 = ['SO','MO','DI','MI','DO','FR','SA'];
+    return dayNames2[actDate.getDay()] === ['SO','MO','DI','MI','DO','FR','SA'][i];
+  });
+  const week = getCurrentWeek();
+  // Check current week and surrounding days
+  for(let w = Math.max(1,week-1); w <= Math.min(4,week+1); w++) {
+    const dayOfWeek = ['SO','MO','DI','MI','DO','FR','SA'][actDate.getDay()];
+    const match = currentPlan[w].find(d => d.day === dayOfWeek);
+    if(match && match.intensity > 0) return { week: w, plan: match };
+  }
+  return null;
+}
+
+function analyzeStravaActivity(activity) {
+  const dist = (activity.distance/1000).toFixed(2);
+  const pace = activity.moving_time/60/(activity.distance/1000);
+  const pMin = Math.floor(pace), pSec = Math.round((pace%1)*60);
+  const dur = Math.round(activity.moving_time/60);
+  const hr = activity.average_heartrate ? `Ø HF: ${Math.round(activity.average_heartrate)} bpm, Max: ${Math.round(activity.max_heartrate)} bpm` : 'keine HF-Daten';
+  const elev = activity.total_elevation_gain || 0;
+  const match = matchActivityToPlan(activity);
+  
+  const context = buildContext();
+  const actDetails = `Aktivität: "${activity.name}"
+Typ: ${activity.sport_type || activity.type}
+Distanz: ${dist} km
+Pace: ${pMin}:${String(pSec).padStart(2,'0')} min/km
+Dauer: ${dur} Minuten
+Herzfrequenz: ${hr}
+Höhenmeter: ${elev}m
+Beschreibung: ${activity.description || 'keine'}`;
+
+  const planContext = match 
+    ? `GEPLANTES WORKOUT (${match.plan.day}, Woche ${match.week}/4):
+Name: ${match.plan.name}
+Detail: ${match.plan.detail}
+Intensität: ${match.plan.intensity}/5`
+    : 'Kein direkt passendes geplantes Workout gefunden – bitte trotzdem analysieren.';
+
+  const prompt = context + `
+
+---
+Ich habe soeben dieses Workout auf Strava hochgeladen und möchte eine detaillierte Analyse:
+
+${actDetails}
+
+${planContext}
+
+Bitte analysiere:
+1. PLAN vs. REALITÄT: Habe ich das geplante Workout erfüllt, über- oder untererfüllt? Was sagen die Zahlen?
+2. QUALITÄT: Wie gut war die Leistung objektiv (Pace, HF-Zonen, Effizienz)?
+3. AUSWIRKUNG AUF DEN PLAN: Muss ich die nächsten Tage anpassen? (Mehr Erholung? Intensität hoch/runter?)
+4. COACHING-FEEDBACK: Was habe ich gut gemacht, was kann ich beim nächsten Mal besser machen?
+5. NÄCHSTE EINHEIT: Was soll ich morgen konkret tun?
+
+Sei direkt, präzise und wissenschaftlich fundiert. Keine Floskeln.`;
+
+  window.open('https://claude.ai/new?q=' + encodeURIComponent(prompt), '_blank');
+}
+
 function renderActivities(activities) {
   const feed = document.getElementById('activityFeed');
   if(!activities||!activities.length){feed.innerHTML='<div class="loading">Keine Aktivitäten diese Woche</div>';return;}
-  feed.innerHTML = activities.slice(0,5).map(a=>{
+  feed.innerHTML = activities.slice(0,6).map(a=>{
     const dist=(a.distance/1000).toFixed(1);
     const pace=a.moving_time/60/(a.distance/1000);
     const pMin=Math.floor(pace),pSec=Math.round((pace-pMin)*60);
     const dur=Math.round(a.moving_time/60);
     const date=new Date(a.start_date).toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit'});
+    const match = matchActivityToPlan(a);
+    const matchBadge = match ? `<span style="font-family:'DM Mono',monospace;font-size:0.55rem;color:var(--green);margin-left:0.5rem">✓ ${match.plan.name.substring(0,20)}...</span>` : '';
+    const hasStats = a.distance > 100;
     return `<div class="activity-card">
-      <div class="activity-type">${a.sport_type||a.type} · ${date}</div>
+      <div class="activity-type">${a.sport_type||a.type} · ${date}${matchBadge}</div>
       <div class="activity-name">${a.name}</div>
       <div class="activity-stats">
+        ${hasStats ? `
         <div><span class="act-stat-val">${dist} km</span><span class="act-stat-lbl">Distanz</span></div>
-        <div><span class="act-stat-val">${pMin}:${String(pSec).padStart(2,'0')}</span><span class="act-stat-lbl">min/km</span></div>
+        <div><span class="act-stat-val">${isNaN(pMin)?'—':pMin+':'+String(pSec).padStart(2,'0')}</span><span class="act-stat-lbl">min/km</span></div>
         <div><span class="act-stat-val">${dur} min</span><span class="act-stat-lbl">Dauer</span></div>
-        <div><span class="act-stat-val">${a.total_elevation_gain||0}m</span><span class="act-stat-lbl">Höhenmeter</span></div>
+        <div><span class="act-stat-val">${a.total_elevation_gain||0}m</span><span class="act-stat-lbl">Höhenmeter</span></div>` : `
+        <div><span class="act-stat-val">${dur} min</span><span class="act-stat-lbl">Dauer</span></div>
+        <div><span class="act-stat-val">${a.average_heartrate ? Math.round(a.average_heartrate)+' bpm' : '—'}</span><span class="act-stat-lbl">Ø HF</span></div>`}
       </div>
+      <button onclick='analyzeStravaActivity(${JSON.stringify(a).replace(/'/g,"&#39;")})' style="margin-top:0.6rem;width:100%;background:none;border:1px solid var(--grey2);color:var(--text-muted);font-family:'DM Mono',monospace;font-size:0.6rem;padding:0.35rem;cursor:pointer;letter-spacing:0.08em;transition:all 0.2s" onmouseover="this.style.borderColor='var(--orange)';this.style.color='var(--orange)'" onmouseout="this.style.borderColor='var(--grey2)';this.style.color='var(--text-muted)'">🔍 WORKOUT ANALYSIEREN</button>
     </div>`;
   }).join('');
+  
+  // Check for new activities since last sync
+  checkForNewActivities(activities);
+}
+
+function checkForNewActivities(activities) {
+  const lastSeen = localStorage.getItem('last_seen_activity');
+  if(!activities.length) return;
+  const newest = activities[0];
+  if(lastSeen !== newest.id?.toString()) {
+    localStorage.setItem('last_seen_activity', newest.id?.toString());
+    if(lastSeen) { // not first load
+      showToast(`🆕 Neues Workout erkannt: "${newest.name}" – klick auf Analysieren!`);
+    }
+  }
 }
 
 function computeStats(activities) {
