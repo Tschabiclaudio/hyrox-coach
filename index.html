@@ -146,7 +146,7 @@
   <div class="connect-box">
     <h2>HYROX <span>COACH</span></h2>
     <p>Verbinde dein Strava-Konto um Live-Trainingsdaten zu laden und deinen persönlichen KI-Coach zu aktivieren.</p>
-    <a class="connect-btn" id="stravaAuthBtn" href="#">MIT STRAVA VERBINDEN</a>
+    <button class="connect-btn" onclick="connectStrava()">MIT STRAVA VERBINDEN</button>
     <button class="skip-btn" onclick="skipConnect()">Ohne Strava fortfahren (Demo)</button>
   </div>
 </div>
@@ -417,7 +417,7 @@ function connectStrava() {
   window.location.href = url;
 }
 
-document.getElementById('stravaAuthBtn').href = `https://www.strava.com/oauth/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&approval_prompt=force&scope=read,activity:read_all`;
+// stravaAuthBtn removed - using onclick connectStrava() directly
 
 function skipConnect() { localStorage.setItem('demo_mode','1'); document.getElementById('connectOverlay').style.display='none'; loadDemoData(); }
 
