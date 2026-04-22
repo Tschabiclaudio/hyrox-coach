@@ -15,599 +15,127 @@
     --grey2: #2a2a2a;
     --text-muted: #666;
     --green: #00ff88;
-    --red: #ff3355;
   }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--black);
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  /* NOISE OVERLAY */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 999;
-    opacity: 0.4;
-  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--black); color:var(--white); font-family:'DM Sans',sans-serif; min-height:100vh; overflow-x:hidden; }
+  body::before { content:''; position:fixed; inset:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); pointer-events:none; z-index:999; opacity:0.4; }
 
   /* HEADER */
-  header {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    padding: 2rem 3rem;
-    border-bottom: 1px solid var(--grey2);
-    position: sticky;
-    top: 0;
-    background: var(--black);
-    z-index: 100;
-  }
-
-  .header-left {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-  }
-
-  .logo {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.5rem;
-    letter-spacing: 0.15em;
-    color: var(--white);
-    text-align: center;
-  }
-
-  .logo span { color: var(--orange); }
-
-  .header-right {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .strava-btn {
-    background: var(--orange);
-    color: var(--black);
-    border: none;
-    padding: 0.6rem 1.4rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    font-weight: 500;
-    letter-spacing: 0.1em;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: all 0.2s;
-  }
-
-  .strava-btn:hover { background: var(--white); }
-
-  .status-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    background: var(--text-muted);
-    display: inline-block;
-    margin-right: 0.4rem;
-  }
-
-  .status-dot.live { background: var(--green); box-shadow: 0 0 8px var(--green); animation: pulse 2s infinite; }
-
-  @keyframes pulse { 0%,100% { opacity:1 } 50% { opacity:0.4 } }
+  header { display:grid; grid-template-columns:1fr auto 1fr; align-items:center; padding:1.5rem 3rem; border-bottom:1px solid var(--grey2); position:sticky; top:0; background:var(--black); z-index:100; }
+  .header-left { font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--text-muted); letter-spacing:0.1em; }
+  .logo { font-family:'Bebas Neue',sans-serif; font-size:2.2rem; letter-spacing:0.15em; text-align:center; }
+  .logo span { color:var(--orange); }
+  .header-right { display:flex; justify-content:flex-end; gap:1rem; align-items:center; }
+  .strava-btn { background:var(--orange); color:var(--black); border:none; padding:0.5rem 1.2rem; font-family:'DM Mono',monospace; font-size:0.7rem; font-weight:500; letter-spacing:0.1em; cursor:pointer; transition:all 0.2s; }
+  .strava-btn:hover { background:var(--white); }
+  .status-dot { width:8px; height:8px; border-radius:50%; background:var(--text-muted); display:inline-block; margin-right:0.4rem; }
+  .status-dot.live { background:var(--green); box-shadow:0 0 8px var(--green); animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.4} }
 
   /* HERO */
-  .hero {
-    padding: 4rem 3rem 2rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-    border-bottom: 1px solid var(--grey2);
-  }
+  .hero { padding:3rem 3rem 2rem; display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:center; border-bottom:1px solid var(--grey2); }
+  .hero-text h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(3.5rem,7vw,8rem); line-height:0.9; letter-spacing:0.02em; }
+  .hero-text h1 .line2 { color:var(--orange); }
+  .hero-text p { margin-top:1.2rem; color:var(--text-muted); font-size:0.85rem; line-height:1.7; max-width:380px; font-family:'DM Mono',monospace; }
+  .race-countdown { background:var(--grey); border:1px solid var(--grey2); padding:2rem; position:relative; overflow:hidden; }
+  .race-countdown::before { content:'RACE DAY'; position:absolute; top:-0.3rem; right:1rem; font-family:'Bebas Neue',sans-serif; font-size:4.5rem; color:var(--orange-dim); pointer-events:none; }
+  .countdown-label { font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--text-muted); letter-spacing:0.15em; margin-bottom:1rem; }
+  .countdown-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:0.5rem; }
+  .countdown-num { font-family:'Bebas Neue',sans-serif; font-size:3.2rem; color:var(--orange); line-height:1; text-align:center; }
+  .countdown-lbl { font-family:'DM Mono',monospace; font-size:0.55rem; color:var(--text-muted); letter-spacing:0.1em; text-align:center; }
 
-  .hero-text h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(4rem, 8vw, 9rem);
-    line-height: 0.9;
-    letter-spacing: 0.02em;
-  }
-
-  .hero-text h1 .line2 { color: var(--orange); }
-
-  .hero-text p {
-    margin-top: 1.5rem;
-    color: var(--text-muted);
-    font-size: 0.9rem;
-    line-height: 1.7;
-    max-width: 380px;
-    font-family: 'DM Mono', monospace;
-  }
-
-  .race-countdown {
-    background: var(--grey);
-    border: 1px solid var(--grey2);
-    padding: 2rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .race-countdown::before {
-    content: 'RACE DAY';
-    position: absolute;
-    top: -0.3rem;
-    right: 1rem;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 5rem;
-    color: var(--orange-dim);
-    letter-spacing: 0.05em;
-    pointer-events: none;
-  }
-
-  .countdown-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-  }
-
-  .countdown-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.5rem;
-  }
-
-  .countdown-unit {
-    text-align: center;
-  }
-
-  .countdown-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3.5rem;
-    color: var(--orange);
-    line-height: 1;
-  }
-
-  .countdown-lbl {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.55rem;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-  }
-
-  /* STATS STRIP */
-  .stats-strip {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    border-bottom: 1px solid var(--grey2);
-  }
-
-  .stat-box {
-    padding: 2rem 2.5rem;
-    border-right: 1px solid var(--grey2);
-    position: relative;
-    overflow: hidden;
-    transition: background 0.3s;
-  }
-
-  .stat-box:last-child { border-right: none; }
-  .stat-box:hover { background: var(--grey); }
-
-  .stat-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--text-muted);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-  }
-
-  .stat-value {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.8rem;
-    color: var(--white);
-    line-height: 1;
-  }
-
-  .stat-unit {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--orange);
-    margin-top: 0.2rem;
-  }
+  /* STATS */
+  .stats-strip { display:grid; grid-template-columns:repeat(4,1fr); border-bottom:1px solid var(--grey2); }
+  .stat-box { padding:1.8rem 2.5rem; border-right:1px solid var(--grey2); transition:background 0.3s; }
+  .stat-box:last-child { border-right:none; }
+  .stat-box:hover { background:var(--grey); }
+  .stat-label { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--text-muted); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:0.5rem; }
+  .stat-value { font-family:'Bebas Neue',sans-serif; font-size:2.6rem; color:var(--white); line-height:1; }
+  .stat-unit { font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--orange); margin-top:0.2rem; }
 
   /* MAIN GRID */
-  .main-grid {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 0;
-  }
+  .main-grid { display:grid; grid-template-columns:2fr 1fr; }
 
-  /* TRAINING PLAN */
-  .plan-section {
-    border-right: 1px solid var(--grey2);
-    padding: 3rem;
-  }
+  /* PLAN */
+  .plan-section { border-right:1px solid var(--grey2); padding:2.5rem; }
+  .section-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:1.5rem; }
+  .section-title { font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:0.1em; }
+  .week-nav { display:flex; gap:0.3rem; }
+  .week-btn { background:none; border:1px solid var(--grey2); color:var(--text-muted); padding:0.3rem 0.8rem; font-family:'DM Mono',monospace; font-size:0.65rem; cursor:pointer; transition:all 0.2s; }
+  .week-btn.active, .week-btn:hover { background:var(--orange); color:var(--black); border-color:var(--orange); }
+  .day-card { display:grid; grid-template-columns:75px 1fr auto; align-items:start; gap:1.2rem; padding:1rem 0; border-bottom:1px solid var(--grey2); transition:all 0.2s; }
+  .day-card:last-child { border-bottom:none; }
+  .day-card.today { background:var(--orange-dim); padding:1rem; border-left:2px solid var(--orange); margin:0 -1rem; }
+  .day-name { font-family:'Bebas Neue',sans-serif; font-size:1.1rem; letter-spacing:0.08em; color:var(--text-muted); }
+  .day-name.today-label { color:var(--orange); }
+  .day-date { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--text-muted); margin-top:0.2rem; }
+  .workout-name { font-family:'DM Sans',sans-serif; font-weight:600; font-size:0.9rem; margin-bottom:0.3rem; }
+  .workout-tags { display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:0.4rem; }
+  .tag { font-family:'DM Mono',monospace; font-size:0.6rem; padding:0.15rem 0.5rem; border:1px solid var(--grey2); color:var(--text-muted); }
+  .tag.run { border-color:var(--orange); color:var(--orange); }
+  .tag.strength { border-color:#4488ff; color:#4488ff; }
+  .tag.hyrox { border-color:var(--green); color:var(--green); }
+  .workout-detail { font-family:'DM Mono',monospace; font-size:0.63rem; color:var(--text-muted); line-height:1.5; }
+  .intensity-bar { display:flex; flex-direction:column; align-items:center; gap:2px; width:36px; }
+  .intensity-blocks { display:flex; flex-direction:column-reverse; gap:2px; height:36px; }
+  .int-block { width:18px; height:5px; background:var(--grey2); }
+  .int-block.filled { background:var(--orange); }
+  .intensity-label { font-family:'DM Mono',monospace; font-size:0.5rem; color:var(--text-muted); }
 
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 2rem;
-  }
+  /* RIGHT PANEL */
+  .right-panel { display:flex; flex-direction:column; }
 
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.8rem;
-    letter-spacing: 0.1em;
-  }
-
-  .week-nav {
-    display: flex;
-    gap: 0.3rem;
-  }
-
-  .week-btn {
-    background: none;
-    border: 1px solid var(--grey2);
-    color: var(--text-muted);
-    padding: 0.3rem 0.8rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    letter-spacing: 0.1em;
-  }
-
-  .week-btn.active, .week-btn:hover {
-    background: var(--orange);
-    color: var(--black);
-    border-color: var(--orange);
-  }
-
-  .day-card {
-    display: grid;
-    grid-template-columns: 80px 1fr auto;
-    align-items: start;
-    gap: 1.5rem;
-    padding: 1.2rem 0;
-    border-bottom: 1px solid var(--grey2);
-    transition: all 0.2s;
-    cursor: pointer;
-  }
-
-  .day-card:last-child { border-bottom: none; }
-  .day-card:hover { padding-left: 0.5rem; }
-
-  .day-card.today { background: var(--orange-dim); padding: 1.2rem 1rem; border-left: 2px solid var(--orange); margin: 0 -1rem; }
-  .day-card.rest { opacity: 0.5; }
-  .day-card.done .day-name { text-decoration: line-through; color: var(--text-muted); }
-
-  .day-name {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.1rem;
-    letter-spacing: 0.08em;
-    color: var(--text-muted);
-  }
-
-  .day-name.today-label { color: var(--orange); }
-
-  .day-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--text-muted);
-    margin-top: 0.2rem;
-  }
-
-  .workout-name {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 0.9rem;
-    margin-bottom: 0.3rem;
-  }
-
-  .workout-tags {
-    display: flex;
-    gap: 0.4rem;
-    flex-wrap: wrap;
-  }
-
-  .tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    padding: 0.15rem 0.5rem;
-    border: 1px solid var(--grey2);
-    color: var(--text-muted);
-    letter-spacing: 0.05em;
-  }
-
-  .tag.run { border-color: var(--orange); color: var(--orange); }
-  .tag.strength { border-color: #4488ff; color: #4488ff; }
-  .tag.hyrox { border-color: var(--green); color: var(--green); }
-  .tag.rest { border-color: var(--text-muted); }
-
-  .intensity-bar {
-    width: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-  }
-
-  .intensity-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.55rem;
-    color: var(--text-muted);
-    text-align: center;
-  }
-
-  .intensity-blocks {
-    display: flex;
-    flex-direction: column-reverse;
-    gap: 2px;
-    height: 40px;
-    justify-content: flex-start;
-  }
-
-  .int-block {
-    width: 20px;
-    height: 6px;
-    background: var(--grey2);
-  }
-
-  .int-block.filled { background: var(--orange); }
+  /* AI COACH CHAT */
+  .coach-section { padding:2.5rem 2rem; border-bottom:1px solid var(--grey2); flex:1; display:flex; flex-direction:column; }
+  .coach-messages { flex:1; overflow-y:auto; max-height:320px; margin-bottom:1rem; display:flex; flex-direction:column; gap:0.8rem; }
+  .msg { font-family:'DM Mono',monospace; font-size:0.72rem; line-height:1.6; padding:0.8rem; max-width:95%; }
+  .msg.coach { background:var(--grey); border-left:2px solid var(--orange); color:var(--white); align-self:flex-start; }
+  .msg.user { background:var(--orange-dim); border-right:2px solid var(--orange); color:var(--white); align-self:flex-end; text-align:right; }
+  .msg.typing { opacity:0.6; }
+  .coach-input-row { display:flex; gap:0.5rem; }
+  .coach-input { flex:1; background:var(--grey); border:1px solid var(--grey2); color:var(--white); padding:0.7rem 1rem; font-family:'DM Mono',monospace; font-size:0.72rem; outline:none; transition:border 0.2s; }
+  .coach-input:focus { border-color:var(--orange); }
+  .coach-input::placeholder { color:var(--text-muted); }
+  .coach-send { background:var(--orange); color:var(--black); border:none; padding:0.7rem 1rem; font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:0.1em; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+  .coach-send:hover { background:var(--white); }
+  .coach-send:disabled { opacity:0.4; cursor:not-allowed; }
 
   /* STRAVA FEED */
-  .feed-section {
-    padding: 3rem 2rem;
-  }
-
-  .activity-card {
-    background: var(--grey);
-    border: 1px solid var(--grey2);
-    padding: 1.2rem;
-    margin-bottom: 0.8rem;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .activity-card::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    background: var(--orange);
-  }
-
-  .activity-card:hover { border-color: var(--orange); transform: translateX(3px); }
-
-  .activity-type {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--orange);
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    margin-bottom: 0.4rem;
-  }
-
-  .activity-name {
-    font-family: 'DM Sans', sans-serif;
-    font-weight: 600;
-    font-size: 0.85rem;
-    margin-bottom: 0.6rem;
-  }
-
-  .activity-stats {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.4rem;
-  }
-
-  .act-stat {
-    font-family: 'DM Mono', monospace;
-  }
-
-  .act-stat-val {
-    font-size: 0.95rem;
-    color: var(--white);
-    font-weight: 500;
-  }
-
-  .act-stat-lbl {
-    font-size: 0.55rem;
-    color: var(--text-muted);
-    display: block;
-  }
+  .feed-section { padding:2.5rem 2rem; }
+  .activity-card { background:var(--grey); border:1px solid var(--grey2); padding:1rem; margin-bottom:0.7rem; transition:all 0.3s; position:relative; overflow:hidden; }
+  .activity-card::after { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--orange); }
+  .activity-card:hover { border-color:var(--orange); transform:translateX(3px); }
+  .activity-type { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--orange); letter-spacing:0.1em; margin-bottom:0.3rem; }
+  .activity-name { font-family:'DM Sans',sans-serif; font-weight:600; font-size:0.82rem; margin-bottom:0.5rem; }
+  .activity-stats { display:grid; grid-template-columns:1fr 1fr; gap:0.3rem; }
+  .act-stat-val { font-family:'DM Mono',monospace; font-size:0.88rem; color:var(--white); }
+  .act-stat-lbl { font-family:'DM Mono',monospace; font-size:0.52rem; color:var(--text-muted); display:block; }
+  .loading { font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--text-muted); text-align:center; padding:2rem; }
 
   /* CONNECT OVERLAY */
-  .connect-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(8,8,8,0.95);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 500;
-    backdrop-filter: blur(4px);
-  }
+  .connect-overlay { position:fixed; inset:0; background:rgba(8,8,8,0.95); display:flex; align-items:center; justify-content:center; z-index:500; backdrop-filter:blur(4px); }
+  .connect-box { text-align:center; max-width:460px; padding:3.5rem 3rem; border:1px solid var(--grey2); background:var(--grey); animation:fadeUp 0.5s ease; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)} }
+  .connect-box h2 { font-family:'Bebas Neue',sans-serif; font-size:2.8rem; letter-spacing:0.1em; margin-bottom:0.5rem; }
+  .connect-box h2 span { color:var(--orange); }
+  .connect-box p { font-family:'DM Mono',monospace; font-size:0.72rem; color:var(--text-muted); line-height:1.8; margin-bottom:2rem; }
+  .connect-btn { background:var(--orange); color:var(--black); border:none; padding:0.9rem 2.2rem; font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:0.15em; cursor:pointer; transition:all 0.2s; display:inline-block; text-decoration:none; }
+  .connect-btn:hover { background:var(--white); transform:translateY(-2px); }
+  .skip-btn { display:block; margin-top:1rem; font-family:'DM Mono',monospace; font-size:0.65rem; color:var(--text-muted); cursor:pointer; text-decoration:underline; background:none; border:none; }
 
-  .connect-box {
-    text-align: center;
-    max-width: 480px;
-    padding: 4rem 3rem;
-    border: 1px solid var(--grey2);
-    background: var(--grey);
-    animation: fadeUp 0.5s ease;
-  }
+  .toast { position:fixed; bottom:2rem; right:2rem; background:var(--grey); border:1px solid var(--orange); padding:1rem 1.5rem; font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--white); z-index:9999; animation:slideIn 0.3s ease; max-width:300px; }
+  @keyframes slideIn { from{transform:translateX(100px);opacity:0}to{transform:translateX(0);opacity:1} }
 
-  @keyframes fadeUp { from { opacity:0; transform:translateY(20px) } to { opacity:1; transform:translateY(0) } }
+  footer { border-top:1px solid var(--grey2); padding:1.2rem 3rem; display:flex; justify-content:space-between; align-items:center; }
+  footer p { font-family:'DM Mono',monospace; font-size:0.6rem; color:var(--text-muted); letter-spacing:0.1em; }
 
-  .connect-box h2 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 3rem;
-    letter-spacing: 0.1em;
-    margin-bottom: 0.5rem;
-  }
-
-  .connect-box h2 span { color: var(--orange); }
-
-  .connect-box p {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    line-height: 1.8;
-    margin-bottom: 2rem;
-  }
-
-  .connect-btn {
-    background: var(--orange);
-    color: var(--black);
-    border: none;
-    padding: 1rem 2.5rem;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.3rem;
-    letter-spacing: 0.15em;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: inline-block;
-    text-decoration: none;
-  }
-
-  .connect-btn:hover { background: var(--white); transform: translateY(-2px); }
-
-  .skip-btn {
-    display: block;
-    margin-top: 1rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    cursor: pointer;
-    text-decoration: underline;
-    background: none;
-    border: none;
-  }
-
-  /* LOADING */
-  .loading {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.75rem;
-    color: var(--text-muted);
-    text-align: center;
-    padding: 2rem;
-    letter-spacing: 0.1em;
-  }
-
-  .loading::after {
-    content: '...';
-    animation: dots 1.5s infinite;
-  }
-
-  @keyframes dots { 0%{content:'.'} 33%{content:'..'} 66%{content:'...'} }
-
-  /* ANALYSIS SECTION */
-  .analysis-section {
-    padding: 3rem;
-    border-top: 1px solid var(--grey2);
-    grid-column: 1 / -1;
-  }
-
-  .analysis-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: var(--grey2);
-    margin-top: 2rem;
-  }
-
-  .analysis-card {
-    background: var(--black);
-    padding: 2rem;
-  }
-
-  .analysis-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.65rem;
-    color: var(--orange);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 0.8rem;
-  }
-
-  .analysis-text {
-    font-size: 0.85rem;
-    line-height: 1.7;
-    color: var(--white);
-    font-family: 'DM Sans', sans-serif;
-  }
-
-  .progress-bar {
-    height: 3px;
-    background: var(--grey2);
-    margin-top: 1rem;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: var(--orange);
-    transition: width 1.5s ease;
-  }
-
-  /* FOOTER */
-  footer {
-    border-top: 1px solid var(--grey2);
-    padding: 1.5rem 3rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  footer p {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.6rem;
-    color: var(--text-muted);
-    letter-spacing: 0.1em;
-  }
-
-  .toast {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background: var(--grey);
-    border: 1px solid var(--orange);
-    padding: 1rem 1.5rem;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.7rem;
-    color: var(--white);
-    z-index: 999;
-    animation: slideIn 0.3s ease;
-    max-width: 300px;
-  }
-
-  @keyframes slideIn { from { transform: translateX(100px); opacity:0 } to { transform: translateX(0); opacity:1 } }
-
-  @media (max-width: 900px) {
-    .hero { grid-template-columns: 1fr; gap: 2rem; }
-    .stats-strip { grid-template-columns: 1fr 1fr; }
-    .main-grid { grid-template-columns: 1fr; }
-    .plan-section { border-right: none; border-bottom: 1px solid var(--grey2); }
-    .analysis-grid { grid-template-columns: 1fr; }
-    header { grid-template-columns: 1fr 1fr; }
-    .logo { text-align: left; }
+  @media(max-width:900px){
+    .hero{grid-template-columns:1fr;gap:2rem;}
+    .stats-strip{grid-template-columns:1fr 1fr;}
+    .main-grid{grid-template-columns:1fr;}
+    .plan-section{border-right:none;border-bottom:1px solid var(--grey2);}
+    header{grid-template-columns:1fr 1fr;}
+    .logo{text-align:left;}
   }
 </style>
 </head>
@@ -617,9 +145,9 @@
 <div class="connect-overlay" id="connectOverlay">
   <div class="connect-box">
     <h2>HYROX <span>COACH</span></h2>
-    <p>Verbinde dein Strava-Konto um deine Trainingsdaten live zu laden und deinen persönlichen 4-Wochen-Plan zu aktivieren.</p>
+    <p>Verbinde dein Strava-Konto um Live-Trainingsdaten zu laden und deinen persönlichen KI-Coach zu aktivieren.</p>
     <a class="connect-btn" id="stravaAuthBtn" href="#">MIT STRAVA VERBINDEN</a>
-    <button class="skip-btn" onclick="skipConnect()">Ohne Strava fortfahren (Demo-Modus)</button>
+    <button class="skip-btn" onclick="skipConnect()">Ohne Strava fortfahren (Demo)</button>
   </div>
 </div>
 
@@ -634,64 +162,29 @@
   </div>
 </header>
 
-<!-- HERO -->
 <section class="hero">
   <div class="hero-text">
-    <h1>
-      DEIN<br>
-      <span class="line2">RENNEN</span><br>
-      WARTET.
-    </h1>
-    <p id="athleteName">Lade Strava-Daten um deinen persönlichen Status zu sehen. Verbinde dein Konto für live Trainingsanalyse und automatische Fortschrittsverfolgung.</p>
+    <h1>DEIN<br><span class="line2">RENNEN</span><br>WARTET.</h1>
+    <p id="athleteDesc">Verbinde Strava und chatte mit deinem KI-Coach – der Plan aktualisiert sich automatisch basierend auf deinen echten Trainingsdaten.</p>
   </div>
   <div class="race-countdown">
     <div class="countdown-label">⏱ COUNTDOWN BIS RACE DAY</div>
     <div class="countdown-grid">
-      <div class="countdown-unit">
-        <div class="countdown-num" id="cdDays">28</div>
-        <div class="countdown-lbl">TAGE</div>
-      </div>
-      <div class="countdown-unit">
-        <div class="countdown-num" id="cdHours">00</div>
-        <div class="countdown-lbl">STD</div>
-      </div>
-      <div class="countdown-unit">
-        <div class="countdown-num" id="cdMins">00</div>
-        <div class="countdown-lbl">MIN</div>
-      </div>
-      <div class="countdown-unit">
-        <div class="countdown-num" id="cdSecs">00</div>
-        <div class="countdown-lbl">SEK</div>
-      </div>
+      <div><div class="countdown-num" id="cdDays">28</div><div class="countdown-lbl">TAGE</div></div>
+      <div><div class="countdown-num" id="cdHours">00</div><div class="countdown-lbl">STD</div></div>
+      <div><div class="countdown-num" id="cdMins">00</div><div class="countdown-lbl">MIN</div></div>
+      <div><div class="countdown-num" id="cdSecs">00</div><div class="countdown-lbl">SEK</div></div>
     </div>
   </div>
 </section>
 
-<!-- STATS STRIP -->
-<section class="stats-strip" id="statsStrip">
-  <div class="stat-box">
-    <div class="stat-label">Wöchentliche Distanz</div>
-    <div class="stat-value" id="statDist">—</div>
-    <div class="stat-unit">KM DIESE WOCHE</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-label">Lauftempo (Ø)</div>
-    <div class="stat-value" id="statPace">4:37</div>
-    <div class="stat-unit">MIN/KM</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-label">Aktivitäten</div>
-    <div class="stat-value" id="statActivities">—</div>
-    <div class="stat-unit">DIESE WOCHE</div>
-  </div>
-  <div class="stat-box">
-    <div class="stat-label">Trainingsbereitschaft</div>
-    <div class="stat-value" id="statReadiness">—</div>
-    <div class="stat-unit">VON 100</div>
-  </div>
+<section class="stats-strip">
+  <div class="stat-box"><div class="stat-label">Wöchentliche Distanz</div><div class="stat-value" id="statDist">—</div><div class="stat-unit">KM DIESE WOCHE</div></div>
+  <div class="stat-box"><div class="stat-label">Lauftempo (Ø)</div><div class="stat-value" id="statPace">4:37</div><div class="stat-unit">MIN/KM</div></div>
+  <div class="stat-box"><div class="stat-label">Aktivitäten</div><div class="stat-value" id="statActivities">—</div><div class="stat-unit">DIESE WOCHE</div></div>
+  <div class="stat-box"><div class="stat-label">Trainingsbereitschaft</div><div class="stat-value" id="statReadiness">—</div><div class="stat-unit">VON 100</div></div>
 </section>
 
-<!-- MAIN GRID -->
 <div class="main-grid">
   <!-- TRAINING PLAN -->
   <section class="plan-section">
@@ -707,43 +200,34 @@
     <div id="planContainer"></div>
   </section>
 
-  <!-- STRAVA FEED -->
-  <section class="feed-section">
-    <div class="section-header">
-      <div class="section-title">AKTIVITÄTEN</div>
-    </div>
-    <div id="activityFeed">
-      <div class="loading">Strava verbinden</div>
-    </div>
-  </section>
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+    <!-- AI COACH -->
+    <section class="coach-section">
+      <div class="section-header">
+        <div class="section-title">KI COACH</div>
+      </div>
+      <div class="coach-messages" id="coachMessages">
+        <div class="msg coach">Hey! Ich bin dein Hyrox Coach 🏋️ Sag mir was du heute trainiert hast oder was du morgen planst – ich passe deinen Plan automatisch an!</div>
+      </div>
+      <div class="coach-input-row">
+        <input class="coach-input" id="coachInput" placeholder="z.B. heute 8km gelaufen, morgen kein Training..." onkeydown="if(event.key==='Enter')sendToCoach()">
+        <button class="coach-send" id="coachSendBtn" onclick="sendToCoach()">SENDEN</button>
+      </div>
+    </section>
+
+    <!-- STRAVA FEED -->
+    <section class="feed-section">
+      <div class="section-header">
+        <div class="section-title">AKTIVITÄTEN</div>
+      </div>
+      <div id="activityFeed"><div class="loading">Strava verbinden für Live-Daten</div></div>
+    </section>
+  </div>
 </div>
 
-<!-- ANALYSIS -->
-<section class="analysis-section">
-  <div class="section-header">
-    <div class="section-title">COACH ANALYSE</div>
-  </div>
-  <div class="analysis-grid" id="analysisGrid">
-    <div class="analysis-card">
-      <div class="analysis-title">Stärken</div>
-      <div class="analysis-text">Dein Lauftempo von 4:37/km über 8km ist stark für einen Hyrox-Einsteiger. Diese aerobe Basis gibt dir einen soliden Vorteil bei den Laufabschnitten zwischen den Workstations.</div>
-      <div class="progress-bar"><div class="progress-fill" style="width:82%"></div></div>
-    </div>
-    <div class="analysis-card">
-      <div class="analysis-title">Fokus für 4 Wochen</div>
-      <div class="analysis-text">Hyrox-spezifische Workstations trainieren (SkiErg, Sled Push, Wall Balls, Burpee Broad Jumps). Laufen unter Ermüdung simulieren. Tempolaufen auf Rennpace 4:30–5:00/km.</div>
-      <div class="progress-bar"><div class="progress-fill" style="width:65%"></div></div>
-    </div>
-    <div class="analysis-card">
-      <div class="analysis-title">Taper & Peaking</div>
-      <div class="analysis-text">Woche 4 ist deine Taperwoche: Volumen –40%, Intensität bleibt hoch. Letzte 3 Tage vor dem Rennen: nur leichte Aktivierung. Race Day: vollständig erholt antreten.</div>
-      <div class="progress-bar"><div class="progress-fill" style="width:45%"></div></div>
-    </div>
-  </div>
-</section>
-
 <footer>
-  <p>HYROX COACH — POWERED BY STRAVA API</p>
+  <p>HYROX COACH — POWERED BY STRAVA + CLAUDE AI</p>
   <p id="lastSync">ZULETZT SYNCHRONISIERT: —</p>
 </footer>
 
@@ -752,119 +236,204 @@ const CLIENT_ID = '229129';
 const CLIENT_SECRET = '2281c569a44d2adafe653f4f26f309493cb8238d';
 const REDIRECT_URI = 'https://tschabiclaudio.github.io/hyrox-coach';
 
-// ─── TRAINING PLAN DATA ───────────────────────────────────────────────
-const plan = {
+// ─── PLAN STATE (stored in localStorage so coach changes persist) ─────
+const defaultPlan = {
   1: [
-    { day: 'MO', name: 'Hyrox Simulation A', tags: ['hyrox','run'], intensity: 4, detail: '3x Runden: 1km @ 5:00/km + SkiErg 500m + Wall Balls 30 reps' },
-    { day: 'DI', name: 'Kraft & Kondition', tags: ['strength'], intensity: 3, detail: 'Squat, Deadlift, KB Swings, Pull-Ups – 4x8 Sätze' },
-    { day: 'MI', name: 'Tempolauf', tags: ['run'], intensity: 4, detail: '6x800m @ 4:15/km, 90s Pause. Ziel: Laktatschwelle pushen' },
-    { day: 'DO', name: 'Aktive Regeneration', tags: ['rest'], intensity: 1, detail: '30 Min lockeres Radfahren oder Schwimmen + Mobility' },
-    { day: 'FR', name: 'Workstation Spezifisch', tags: ['hyrox','strength'], intensity: 3, detail: 'Sled Push/Pull, Burpee Broad Jumps, Farmers Carry, Sandbag Lunges' },
-    { day: 'SA', name: 'Langer Lauf', tags: ['run'], intensity: 3, detail: '14km @ 5:10/km – aerobe Basis, Fettverbrennung, mentale Stärke' },
-    { day: 'SO', name: 'Vollständige Erholung', tags: ['rest'], intensity: 0, detail: 'Kein Training. Schlafen, Essen, Stretching – aktive Recovery' },
+    { day:'MO', name:'✅ SkiErg Zirkel (erledigt)', tags:['hyrox'], intensity:3, detail:'3x6 Min SkiErg @ 2:00/500m – absolviert! Doubles: dein Anteil = 500m SkiErg pro Station. Tempo kann aggressiver sein als bei Solo!' },
+    { day:'DI', name:'Gym A: Unterkörper + Core', tags:['strength'], intensity:3, detail:'Beinpresse 3x8 95kg · Beinstrecker 2x10 90kg · RDL 2x8 100kg · Sandbag Lunges 4x25m @ 25kg · Bauch 2x12 · Hängen 3x50s. Bewährtes Schema beibehalten.' },
+    { day:'MI', name:'Lauf-Intervalle: 3x8min Threshold', tags:['run'], intensity:4, detail:'10min einlaufen · 3x8min @ 4:35/km (deine bewährte Partypace) · 3min Pause · 10min auslaufen. Ziel: Laktatschwelle stabilisieren.' },
+    { day:'DO', name:'Hyrox Workstation Circuit', tags:['hyrox'], intensity:4, detail:'DOUBLES-Training: 4 Runden: 1km Laufband @ 12.2kmh → SkiErg 500m (dein Anteil!) → Wall Balls 15 reps @ 9kg → Sandbag Lunges 25m → Burpee Broad Jumps 10x. Übergabe-Timing mit Partner besprechen: wer übernimmt welche Station?' },
+    { day:'FR', name:'Gym B: Oberkörper + Schultern', tags:['strength'], intensity:3, detail:'Latzug 2x8 85kg · Rudermasch 2x8 60kg · Schrägbank 2x8 27.5kg · Schulterdrücken 2x7 60kg · Seitheben 2x8 65kg · Bizeps 2x7 · Triceps 2x8 55kg. Kein Gewicht erhöhen – Volumen wichtiger jetzt.' },
+    { day:'SA', name:'Race Pace Lauf', tags:['run'], intensity:4, detail:'12km @ 4:50–5:00/km – bewusstes Renntempo simulieren. Lauf durch leichte Ermüdung nach Gym-Woche. Mental einstimmen.' },
+    { day:'SO', name:'Vollständige Erholung', tags:['rest'], intensity:0, detail:'Kein Training. Foam Rolling, Stretching. Gut essen, viel schlafen – du trainierst 6 Tage hart.' },
   ],
   2: [
-    { day: 'MO', name: 'Hyrox Simulation B', tags: ['hyrox','run'], intensity: 5, detail: '4x Runden: 1km @ 4:50/km + RowErg 500m + Sandbag Lunges 25m' },
-    { day: 'DI', name: 'Kraft: Oberkörper', tags: ['strength'], intensity: 3, detail: 'Push Press, Chest-to-Bar, DB Rows, Core – 5x6 Sätze' },
-    { day: 'MI', name: 'Intervalle', tags: ['run'], intensity: 5, detail: '10x400m @ 4:00/km, 60s Pause. Neuromuskuläre Aktivierung' },
-    { day: 'DO', name: 'Aktive Regeneration', tags: ['rest'], intensity: 1, detail: 'Yoga, Foam Rolling, leichtes Gehen – parasympathisches System aktivieren' },
-    { day: 'FR', name: 'Race Pace Training', tags: ['hyrox','run'], intensity: 4, detail: '2x Hyrox-Runde bei Renntempo: 1km + alle 8 Workstations mit 60% Last' },
-    { day: 'SA', name: 'Langer Lauf', tags: ['run'], intensity: 3, detail: '16km @ 5:00/km – aerobe Kapazität ausbauen' },
-    { day: 'SO', name: 'Vollständige Erholung', tags: ['rest'], intensity: 0, detail: 'Kein Training. Nutrition fokus: Proteine & Kohlenhydrate laden' },
+    { day:'MO', name:'Hyrox Simulation: Lauf + 4 Stationen', tags:['hyrox','run'], intensity:5, detail:'DOUBLES Simulation: 4x (1km @ 4:50/km + 1 halbe Workstation). SkiErg 500m · Wall Balls 15x · Sandbag Lunges 25m · Burpee Broad Jumps 40m. Höheres Tempo als Solo möglich – nutze es! Übergabestrategie festlegen.' },
+    { day:'DI', name:'Gym A: Unterkörper + Core', tags:['strength'], intensity:3, detail:'Beinpresse 3x8 97.5kg · Beinstrecker 2x10 92.5kg · RDL 2x8 100kg · Lunges Smith 2x8 20kg pS · Bauch 2x12 · Hängen 3x55s. Leichte Steigerung Beinpresse.' },
+    { day:'MI', name:'Kurzintervalle: 10x1min', tags:['run'], intensity:5, detail:'10min einlaufen · 10x1min @ ~3:30/km (wie deine "abendliche Intervalle") · 90s Pause · 10min auslaufen. Neuromuskuläre Schärfe aufbauen.' },
+    { day:'DO', name:'Aktive Regeneration', tags:['rest'], intensity:1, detail:'30min lockeres Radfahren oder Schwimmen (du warst früher Schwimmer!) · Foam Rolling · Mobility. Parasympathisches System aktivieren.' },
+    { day:'FR', name:'Gym B: Oberkörper fokus', tags:['strength'], intensity:3, detail:'Latzug 2x8 85kg · Rudermasch 2x8 60kg · Schrägbank 2x8 27.5kg · Schulterdrücken 2x7 60kg · Seitheben 2x8 65kg · Wall Balls seated 4x15 @ 9kg (Schulter-Endurance für SkiErg).' },
+    { day:'SA', name:'Langer Lauf Zone 2', tags:['run'], intensity:3, detail:'14km @ 5:10–5:20/km · HF ~136bpm (dein Zone-2-Niveau). Aerobe Basis erhalten, Beine regenerieren trotzdem aktiv.' },
+    { day:'SO', name:'Vollständige Erholung', tags:['rest'], intensity:0, detail:'Kein Training. Carb Loading vorbereiten. Mentale Vorbereitung auf die letzte intensive Woche.' },
   ],
   3: [
-    { day: 'MO', name: 'Hyrox Vollsimulation', tags: ['hyrox','run'], intensity: 5, detail: 'Vollständige Hyrox-Simulation: 8km Lauf + alle 8 Workstations mit 80% Last' },
-    { day: 'DI', name: 'Kraft & Explosivität', tags: ['strength'], intensity: 4, detail: 'Box Jumps, Power Cleans, Heavy KB Swings – Power Output maximieren' },
-    { day: 'MI', name: 'Kurzintervalle', tags: ['run'], intensity: 4, detail: '12x200m @ 3:45/km, 45s Pause. Schnelligkeit & Laktattoleranz' },
-    { day: 'DO', name: 'Aktive Regeneration', tags: ['rest'], intensity: 1, detail: 'Massage, Kältebad, Sauna – muskuläre Regeneration maximieren' },
-    { day: 'FR', name: 'Mental Race Prep', tags: ['hyrox'], intensity: 3, detail: 'Workstation-Technik verfeinern bei reduzierter Last. Mentale Visualisierung' },
-    { day: 'SA', name: 'Lauf + Kraft', tags: ['run','strength'], intensity: 3, detail: '10km @ 4:50/km + 30 Min Kraft – Ermüdungswiderstand trainieren' },
-    { day: 'SO', name: 'Vollständige Erholung', tags: ['rest'], intensity: 0, detail: 'Letzte intensive Woche abschließen. Maximale Erholung.' },
+    { day:'MO', name:'Hyrox Vollsimulation', tags:['hyrox','run'], intensity:5, detail:'DOUBLES Vollsimulation mit Partner! 8x 1km Lauf + halbe Workstations: SkiErg 500m · Sled Push 12.5m · Sled Pull 12.5m · Burpee Broad Jumps 40m · RowErg 500m · Farmers Carry 100m · Sandbag Lunges 50m · Wall Balls 50 reps @ 9kg. Übergaben üben – flüssig & schnell!' },
+    { day:'DI', name:'Gym A: Aktivierung (reduziert)', tags:['strength'], intensity:2, detail:'Beinpresse 2x8 90kg · RDL 2x8 95kg · Latzug 2x8 80kg · Rudermasch 2x8 55kg. Kein Maximalversuch – Muskeln aktivieren, nicht zerstören. -10% Gewicht vs. Woche 2.' },
+    { day:'MI', name:'Threshold 4x5min', tags:['run'], intensity:4, detail:'10min einlaufen · 4x5min @ 4:30/km · 2min Pause · 10min auslaufen. Kürzer als Woche 1 aber schärfer – Renntempo einschärfen.' },
+    { day:'DO', name:'Aktive Regeneration', tags:['rest'], intensity:1, detail:'Massage buchen wenn möglich. Kältebad, Sauna. Muskelgedächtnis konsolidiert sich jetzt – Ruhe ist Training!' },
+    { day:'FR', name:'Gym B: Oberkörper leicht', tags:['strength'], intensity:2, detail:'Latzug 2x8 80kg · Rudermasch 2x8 55kg · Schrägbank 2x8 25kg · Schulterdrücken 2x8 50kg · Seitheben 2x10 60kg. Leicht & sauber. SkiErg-Schultern schonen.' },
+    { day:'SA', name:'Race Pace + Workstations', tags:['hyrox','run'], intensity:3, detail:'DOUBLES Technik-Run: 3x (1km @ 4:45/km + SkiErg 500m + Wall Balls 15x + Burpees 20m). Fokus: Übergabe-Routine einschleifen, ökonomische Bewegung, Atemkontrolle bei Stationswechsel.' },
+    { day:'SO', name:'Vollständige Erholung', tags:['rest'], intensity:0, detail:'Letzte schwere Woche abgeschlossen. Ab jetzt Taper. Maximale Erholung – du hast alles gegeben.' },
   ],
   4: [
-    { day: 'MO', name: 'Taper: Kurze Simulation', tags: ['hyrox','run'], intensity: 3, detail: '2x Runden: 1km @ 4:45/km + 3 Workstations – kurz, scharf, fokussiert' },
-    { day: 'DI', name: 'Taper: Kraft Aktivierung', tags: ['strength'], intensity: 2, detail: 'Leichte Gewichte, hohe Wiederholungen – Muskelgedächtnis aktivieren' },
-    { day: 'MI', name: 'Taper: Kurzlauf', tags: ['run'], intensity: 2, detail: '4x400m @ Renntempo – Beine an Pace erinnern, nichts verausgaben' },
-    { day: 'DO', name: 'Vollständige Erholung', tags: ['rest'], intensity: 0, detail: 'Kein Training. Kohlenhydrate laden beginnen. Schlafen.' },
-    { day: 'FR', name: 'Leichte Aktivierung', tags: ['run'], intensity: 1, detail: '15 Min lockeres Laufen + dynamisches Dehnen. Beine locker halten.' },
-    { day: 'SA', name: 'Pre-Race Vorbereitung', tags: ['rest'], intensity: 0, detail: 'Ausrüstung checken, früh schlafen gehen, mentale Vorbereitung.' },
-    { day: 'SO', name: '🏆 RACE DAY', tags: ['hyrox'], intensity: 5, detail: 'HYROX WETTKAMPF. Du bist bereit. Starte kontrolliert. Vertrau dem Training.' },
+    { day:'MO', name:'Taper: Kurze Simulation', tags:['hyrox','run'], intensity:3, detail:'DOUBLES Taper: 2x (1km @ 4:45/km + SkiErg 500m + Wall Balls 10x + Burpees 20m). Kurz & fokussiert. Übergaben nochmals durchgehen. Selbstvertrauen tanken.' },
+    { day:'DI', name:'Taper: Gym Aktivierung', tags:['strength'], intensity:2, detail:'Beinpresse 2x6 85kg · Latzug 2x6 75kg · Rudermasch 2x6 50kg · Seitheben 2x10 55kg. 20% weniger Gewicht, volle Kontrolle. Kein Muskelkater provozieren!' },
+    { day:'MI', name:'Taper: 4x400m Renntempo', tags:['run'], intensity:2, detail:'4x400m @ 4:30/km · 90s Pause. Nur 10min warm-up und cool-down. Beine an Geschwindigkeit erinnern ohne zu ermüden.' },
+    { day:'DO', name:'Vollständige Erholung', tags:['rest'], intensity:0, detail:'Kein Training. Kohlenhydrate laden: Pasta, Reis, Brot. Viel trinken. Früh ins Bett. Ausrüstung vorbereiten.' },
+    { day:'FR', name:'Leichte Aktivierung', tags:['run'], intensity:1, detail:'15min lockeres Laufen @ 5:30/km + 5min dynamisches Dehnen. Nur um Beine locker zu halten. Kein Schwitzen!' },
+    { day:'SA', name:'Pre-Race Day', tags:['rest'], intensity:0, detail:'Anreise, Anmeldung, Strecke abgehen wenn möglich. Leichtes Essen. 22:00 Uhr schlafen. Du bist bereit – vertrau dem Training.' },
+    { day:'SO', name:'🏆 RACE DAY – HYROX', tags:['hyrox'], intensity:5, detail:'DOUBLES OPEN – Race Day! Laufanteil: alle 8km selbst laufen @ ~5:00/km. Workstations: je 50% → SkiErg 500m @ 1:55/500m, Wall Balls 50x @ 9kg unbroken, Sandbag Lunges 50m. Übergabe flüssig. Zielzeit ~55-65min. Erste 2km kontrolliert – dann Gas geben. Du bist bereit!' },
   ]
 };
 
+function getPlan() {
+  const saved = localStorage.getItem('hyrox_plan');
+  return saved ? JSON.parse(saved) : JSON.parse(JSON.stringify(defaultPlan));
+}
+function savePlan(p) { localStorage.setItem('hyrox_plan', JSON.stringify(p)); }
+
+let currentPlan = getPlan();
 const today = new Date();
 const dayNames = ['SO','MO','DI','MI','DO','FR','SA'];
 const todayName = dayNames[today.getDay()];
 
-function showWeek(w, btn) {
-  document.querySelectorAll('.week-btn').forEach(b => b.classList.remove('active'));
+function getCurrentWeek() {
+  const raceDate = new Date(today); raceDate.setDate(today.getDate()+28);
+  const diff = Math.ceil((raceDate-today)/(7*86400000));
+  return Math.max(1,Math.min(4,5-diff));
+}
+
+function showWeek(w,btn) {
+  document.querySelectorAll('.week-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderPlan(w);
 }
 
 function renderPlan(week) {
   const container = document.getElementById('planContainer');
-  const days = plan[week];
-  container.innerHTML = days.map((d, i) => {
-    const isToday = d.day === todayName && week === getCurrentWeek();
-    const blocks = [1,2,3,4,5].map(n =>
-      `<div class="int-block ${n <= d.intensity ? 'filled' : ''}"></div>`
-    ).join('');
-    const date = new Date(today);
-    date.setDate(today.getDate() - today.getDay() + 1 + i + (week-1)*7 - (getCurrentWeek()-1)*7);
-    const dateStr = date.toLocaleDateString('de-AT', {day:'2-digit',month:'2-digit'});
-    return `
-      <div class="day-card ${isToday ? 'today' : ''} ${d.intensity === 0 ? 'rest' : ''}">
-        <div>
-          <div class="day-name ${isToday ? 'today-label' : ''}">${d.day}${isToday ? ' ◀' : ''}</div>
-          <div class="day-date">${dateStr}</div>
-        </div>
-        <div>
-          <div class="workout-name">${d.name}</div>
-          <div class="workout-tags">${d.tags.map(t => `<span class="tag ${t}">${t.toUpperCase()}</span>`).join('')}</div>
-          <div style="font-family:'DM Mono',monospace;font-size:0.65rem;color:var(--text-muted);margin-top:0.5rem;line-height:1.5">${d.detail}</div>
-        </div>
-        <div class="intensity-bar">
-          <div class="intensity-blocks">${blocks}</div>
-          <div class="intensity-label">INT</div>
-        </div>
-      </div>`;
+  const days = currentPlan[week];
+  container.innerHTML = days.map((d,i)=>{
+    const isToday = d.day===todayName && week===getCurrentWeek();
+    const blocks=[1,2,3,4,5].map(n=>`<div class="int-block ${n<=d.intensity?'filled':''}"></div>`).join('');
+    const date=new Date(today);
+    date.setDate(today.getDate()-today.getDay()+1+i+(week-1)*7-(getCurrentWeek()-1)*7);
+    const dateStr=date.toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit'});
+    return `<div class="day-card ${isToday?'today':''}">
+      <div>
+        <div class="day-name ${isToday?'today-label':''}">${d.day}${isToday?' ◀':''}</div>
+        <div class="day-date">${dateStr}</div>
+      </div>
+      <div>
+        <div class="workout-name">${d.name}</div>
+        <div class="workout-tags">${d.tags.map(t=>`<span class="tag ${t}">${t.toUpperCase()}</span>`).join('')}</div>
+        <div class="workout-detail">${d.detail}</div>
+      </div>
+      <div class="intensity-bar">
+        <div class="intensity-blocks">${blocks}</div>
+        <div class="intensity-label">INT</div>
+      </div>
+    </div>`;
   }).join('');
 }
 
-function getCurrentWeek() {
-  const raceDate = new Date(today);
-  raceDate.setDate(today.getDate() + 28);
-  const diff = Math.ceil((raceDate - today) / (7 * 24 * 60 * 60 * 1000));
-  return Math.max(1, Math.min(4, 5 - diff));
+// ─── COUNTDOWN ────────────────────────────────────────────────────────
+const raceDate = new Date(today); raceDate.setDate(today.getDate()+28); raceDate.setHours(9,0,0,0);
+function updateCountdown(){
+  const diff=raceDate-new Date(); if(diff<=0)return;
+  const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000),s=Math.floor((diff%60000)/1000);
+  document.getElementById('cdDays').textContent=String(d).padStart(2,'0');
+  document.getElementById('cdHours').textContent=String(h).padStart(2,'0');
+  document.getElementById('cdMins').textContent=String(m).padStart(2,'0');
+  document.getElementById('cdSecs').textContent=String(s).padStart(2,'0');
 }
+setInterval(updateCountdown,1000); updateCountdown();
 
-// ─── COUNTDOWN ───────────────────────────────────────────────────────
-const raceDate = new Date(today);
-raceDate.setDate(today.getDate() + 28);
-raceDate.setHours(9, 0, 0, 0);
+// ─── AI COACH ─────────────────────────────────────────────────────────
+const chatHistory = [];
 
-function updateCountdown() {
-  const now = new Date();
-  const diff = raceDate - now;
-  if (diff <= 0) {
-    document.getElementById('cdDays').textContent = '00';
-    return;
+async function sendToCoach() {
+  const input = document.getElementById('coachInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  input.value = '';
+  document.getElementById('coachSendBtn').disabled = true;
+  addMsg(msg, 'user');
+
+  const typingEl = addMsg('...', 'coach typing');
+
+  // Build plan summary for context
+  const planSummary = JSON.stringify(currentPlan);
+  const stravaActivities = localStorage.getItem('strava_recent') || 'Keine Strava-Daten verfügbar';
+
+  const systemPrompt = `Du bist ein professioneller Hyrox-Coach. Du betreust einen männlichen Athleten unter 30, Hyrox-Anfänger (< 1 Jahr), der in ${getCurrentWeek() === 4 ? 'weniger als 1 Woche' : 4 - getCurrentWeek() + 1 + ' Wochen'} an einem Hyrox-Wettkampf teilnimmt. Sein Lauftempo ist ~4:37/km, er ist sehr gut erholt und trainiert 6x/Woche. 
+
+Aktueller 4-Wochen-Trainingsplan (JSON): ${planSummary}
+
+Strava-Aktivitäten: ${stravaActivities}
+
+Heute ist ${todayName}, Woche ${getCurrentWeek()} von 4.
+
+Wenn der Athlet dir sagt was er trainiert hat oder was er ändern möchte, antworte IMMER in diesem Format:
+1. Kurze Coaching-Antwort (2-3 Sätze, motivierend aber direkt)
+2. Falls eine Planänderung nötig ist, gib am Ende exakt dieses JSON-Block aus (sonst nicht):
+PLAN_UPDATE:{"week":X,"dayIndex":Y,"name":"...","tags":["..."],"intensity":Z,"detail":"..."}
+
+Wobei dayIndex 0=MO, 1=DI, 2=MI, 3=DO, 4=FR, 5=SA, 6=SO.
+Antworte auf Deutsch. Sei präzise, wissenschaftlich fundiert, motivierend.`;
+
+  chatHistory.push({ role: 'user', content: msg });
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: chatHistory
+      })
+    });
+
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Fehler beim Verbinden mit dem Coach.';
+
+    chatHistory.push({ role: 'assistant', content: reply });
+
+    // Check for plan update
+    const updateMatch = reply.match(/PLAN_UPDATE:(\{.*\})/s);
+    let displayReply = reply;
+    if (updateMatch) {
+      try {
+        const update = JSON.parse(updateMatch[1]);
+        currentPlan[update.week][update.dayIndex] = {
+          day: currentPlan[update.week][update.dayIndex].day,
+          name: update.name,
+          tags: update.tags,
+          intensity: update.intensity,
+          detail: update.detail
+        };
+        savePlan(currentPlan);
+        renderPlan(getCurrentWeek());
+        displayReply = reply.replace(/PLAN_UPDATE:\{.*\}/s, '✅ Plan wurde automatisch aktualisiert!');
+        showToast('✅ Trainingsplan aktualisiert!');
+      } catch(e) { console.error('Plan parse error', e); }
+    }
+
+    typingEl.textContent = displayReply;
+    typingEl.classList.remove('typing');
+  } catch(e) {
+    typingEl.textContent = 'Verbindungsfehler. Bitte erneut versuchen.';
+    typingEl.classList.remove('typing');
   }
-  const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff % 86400000) / 3600000);
-  const m = Math.floor((diff % 3600000) / 60000);
-  const s = Math.floor((diff % 60000) / 1000);
-  document.getElementById('cdDays').textContent = String(d).padStart(2,'0');
-  document.getElementById('cdHours').textContent = String(h).padStart(2,'0');
-  document.getElementById('cdMins').textContent = String(m).padStart(2,'0');
-  document.getElementById('cdSecs').textContent = String(s).padStart(2,'0');
+
+  document.getElementById('coachSendBtn').disabled = false;
+  const msgs = document.getElementById('coachMessages');
+  msgs.scrollTop = msgs.scrollHeight;
 }
 
-setInterval(updateCountdown, 1000);
-updateCountdown();
+function addMsg(text, type) {
+  const msgs = document.getElementById('coachMessages');
+  const el = document.createElement('div');
+  el.className = `msg ${type}`;
+  el.textContent = text;
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+  return el;
+}
 
-// ─── STRAVA AUTH ──────────────────────────────────────────────────────
+// ─── STRAVA ──────────────────────────────────────────────────────────
 function connectStrava() {
   const url = `https://www.strava.com/oauth/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&approval_prompt=force&scope=read,activity:read_all`;
   window.location.href = url;
@@ -872,184 +441,112 @@ function connectStrava() {
 
 document.getElementById('stravaAuthBtn').href = `https://www.strava.com/oauth/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&approval_prompt=force&scope=read,activity:read_all`;
 
-function skipConnect() {
-  document.getElementById('connectOverlay').style.display = 'none';
-  loadDemoData();
-}
+function skipConnect() { localStorage.setItem('demo_mode','1'); document.getElementById('connectOverlay').style.display='none'; loadDemoData(); }
 
 async function exchangeCode(code) {
   try {
-    const res = await fetch('https://www.strava.com/oauth/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-        code: code,
-        grant_type: 'authorization_code'
-      })
-    });
+    const res = await fetch('https://www.strava.com/oauth/token',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({client_id:CLIENT_ID,client_secret:CLIENT_SECRET,code,grant_type:'authorization_code'})});
     const data = await res.json();
-    if (data.access_token) {
-      localStorage.setItem('strava_token', data.access_token);
-      localStorage.setItem('strava_refresh', data.refresh_token);
-      localStorage.setItem('strava_expires', data.expires_at);
-      localStorage.setItem('strava_athlete', JSON.stringify(data.athlete));
+    if(data.access_token){
+      localStorage.setItem('strava_token',data.access_token);
+      localStorage.setItem('strava_refresh',data.refresh_token);
+      localStorage.setItem('strava_expires',data.expires_at);
+      localStorage.setItem('strava_athlete',JSON.stringify(data.athlete));
       return data.access_token;
     }
-  } catch(e) { console.error(e); }
+  } catch(e){console.error(e);}
   return null;
 }
 
 async function getValidToken() {
-  const expires = parseInt(localStorage.getItem('strava_expires') || '0');
-  const now = Math.floor(Date.now() / 1000);
-  if (now < expires - 300) return localStorage.getItem('strava_token');
-
+  const expires = parseInt(localStorage.getItem('strava_expires')||'0');
+  if(Math.floor(Date.now()/1000)<expires-300) return localStorage.getItem('strava_token');
   const refresh = localStorage.getItem('strava_refresh');
-  if (!refresh) return null;
-
+  if(!refresh) return null;
   try {
-    const res = await fetch('https://www.strava.com/oauth/token', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-        refresh_token: refresh,
-        grant_type: 'refresh_token'
-      })
-    });
+    const res = await fetch('https://www.strava.com/oauth/token',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({client_id:CLIENT_ID,client_secret:CLIENT_SECRET,refresh_token:refresh,grant_type:'refresh_token'})});
     const data = await res.json();
-    if (data.access_token) {
-      localStorage.setItem('strava_token', data.access_token);
-      localStorage.setItem('strava_refresh', data.refresh_token);
-      localStorage.setItem('strava_expires', data.expires_at);
-      return data.access_token;
-    }
-  } catch(e) { console.error(e); }
+    if(data.access_token){localStorage.setItem('strava_token',data.access_token);localStorage.setItem('strava_refresh',data.refresh_token);localStorage.setItem('strava_expires',data.expires_at);return data.access_token;}
+  } catch(e){console.error(e);}
   return null;
 }
 
 async function loadStravaData(token) {
-  document.getElementById('connectOverlay').style.display = 'none';
+  document.getElementById('connectOverlay').style.display='none';
   document.getElementById('statusDot').classList.add('live');
-  document.getElementById('statusText').textContent = 'STRAVA LIVE';
-  document.getElementById('headerConnectBtn').textContent = '✓ VERBUNDEN';
-  document.getElementById('headerConnectBtn').style.background = 'var(--green)';
-
-  const athlete = JSON.parse(localStorage.getItem('strava_athlete') || '{}');
-  if (athlete.firstname) {
-    document.getElementById('athleteName').textContent =
-      `Hey ${athlete.firstname}! Hier ist dein persönlicher Hyrox-Trainingsplan für die nächsten 4 Wochen. Alle Daten werden live von Strava geladen.`;
-  }
-
+  document.getElementById('statusText').textContent='STRAVA LIVE';
+  document.getElementById('headerConnectBtn').textContent='✓ VERBUNDEN';
+  document.getElementById('headerConnectBtn').style.background='var(--green)';
+  const athlete = JSON.parse(localStorage.getItem('strava_athlete')||'{}');
+  if(athlete.firstname) document.getElementById('athleteDesc').textContent=`Hey ${athlete.firstname}! Chatte mit deinem KI-Coach – erzähl ihm was du trainiert hast und der Plan passt sich automatisch an.`;
   try {
-    const after = Math.floor((Date.now() - 7 * 86400000) / 1000);
-    const res = await fetch(`https://www.strava.com/api/v3/athlete/activities?after=${after}&per_page=10`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    });
+    const after = Math.floor((Date.now()-7*86400000)/1000);
+    const res = await fetch(`https://www.strava.com/api/v3/athlete/activities?after=${after}&per_page=10`,{headers:{'Authorization':`Bearer ${token}`}});
     const activities = await res.json();
+    localStorage.setItem('strava_recent', JSON.stringify(activities.map(a=>({name:a.name,type:a.sport_type,distance_km:(a.distance/1000).toFixed(1),duration_min:Math.round(a.moving_time/60),date:a.start_date.split('T')[0]}))));
     renderActivities(activities);
     computeStats(activities);
-    document.getElementById('lastSync').textContent =
-      `ZULETZT SYNCHRONISIERT: ${new Date().toLocaleTimeString('de-AT')}`;
-  } catch(e) {
-    console.error(e);
-    loadDemoData();
-  }
+    document.getElementById('lastSync').textContent=`ZULETZT SYNCHRONISIERT: ${new Date().toLocaleTimeString('de-AT')}`;
+  } catch(e){loadDemoData();}
 }
 
 function renderActivities(activities) {
   const feed = document.getElementById('activityFeed');
-  if (!activities || activities.length === 0) {
-    feed.innerHTML = '<div class="loading">Keine Aktivitäten diese Woche</div>';
-    return;
-  }
-  feed.innerHTML = activities.slice(0, 6).map(a => {
-    const dist = (a.distance / 1000).toFixed(1);
-    const pace = a.moving_time / 60 / (a.distance / 1000);
-    const paceMin = Math.floor(pace);
-    const paceSec = Math.round((pace - paceMin) * 60);
-    const duration = Math.round(a.moving_time / 60);
-    const date = new Date(a.start_date).toLocaleDateString('de-AT', {day:'2-digit',month:'2-digit'});
-    return `
-      <div class="activity-card">
-        <div class="activity-type">${a.sport_type || a.type} · ${date}</div>
-        <div class="activity-name">${a.name}</div>
-        <div class="activity-stats">
-          <div class="act-stat"><span class="act-stat-val">${dist} km</span><span class="act-stat-lbl">Distanz</span></div>
-          <div class="act-stat"><span class="act-stat-val">${paceMin}:${String(paceSec).padStart(2,'0')}</span><span class="act-stat-lbl">min/km</span></div>
-          <div class="act-stat"><span class="act-stat-val">${duration} min</span><span class="act-stat-lbl">Dauer</span></div>
-          <div class="act-stat"><span class="act-stat-val">${a.total_elevation_gain || 0}m</span><span class="act-stat-lbl">Höhenmeter</span></div>
-        </div>
-      </div>`;
+  if(!activities||!activities.length){feed.innerHTML='<div class="loading">Keine Aktivitäten diese Woche</div>';return;}
+  feed.innerHTML = activities.slice(0,5).map(a=>{
+    const dist=(a.distance/1000).toFixed(1);
+    const pace=a.moving_time/60/(a.distance/1000);
+    const pMin=Math.floor(pace),pSec=Math.round((pace-pMin)*60);
+    const dur=Math.round(a.moving_time/60);
+    const date=new Date(a.start_date).toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit'});
+    return `<div class="activity-card">
+      <div class="activity-type">${a.sport_type||a.type} · ${date}</div>
+      <div class="activity-name">${a.name}</div>
+      <div class="activity-stats">
+        <div><span class="act-stat-val">${dist} km</span><span class="act-stat-lbl">Distanz</span></div>
+        <div><span class="act-stat-val">${pMin}:${String(pSec).padStart(2,'0')}</span><span class="act-stat-lbl">min/km</span></div>
+        <div><span class="act-stat-val">${dur} min</span><span class="act-stat-lbl">Dauer</span></div>
+        <div><span class="act-stat-val">${a.total_elevation_gain||0}m</span><span class="act-stat-lbl">Höhenmeter</span></div>
+      </div>
+    </div>`;
   }).join('');
 }
 
 function computeStats(activities) {
-  const totalDist = activities.reduce((s, a) => s + a.distance, 0) / 1000;
-  document.getElementById('statDist').textContent = totalDist.toFixed(0);
-  document.getElementById('statActivities').textContent = activities.length;
-  const readiness = Math.min(100, Math.round(70 + activities.length * 5 - (totalDist > 50 ? 10 : 0)));
-  document.getElementById('statReadiness').textContent = readiness;
+  const total=(activities.reduce((s,a)=>s+a.distance,0)/1000).toFixed(0);
+  document.getElementById('statDist').textContent=total;
+  document.getElementById('statActivities').textContent=activities.length;
+  document.getElementById('statReadiness').textContent=Math.min(100,70+activities.length*4);
 }
 
 function loadDemoData() {
-  document.getElementById('statDist').textContent = '32';
-  document.getElementById('statActivities').textContent = '4';
-  document.getElementById('statReadiness').textContent = '78';
-  document.getElementById('activityFeed').innerHTML = `
-    <div class="activity-card">
-      <div class="activity-type">Run · ${new Date().toLocaleDateString('de-AT',{day:'2-digit',month:'2-digit'})}</div>
-      <div class="activity-name">Morgen-Tempolauf</div>
-      <div class="activity-stats">
-        <div class="act-stat"><span class="act-stat-val">8.0 km</span><span class="act-stat-lbl">Distanz</span></div>
-        <div class="act-stat"><span class="act-stat-val">4:37</span><span class="act-stat-lbl">min/km</span></div>
-        <div class="act-stat"><span class="act-stat-val">37 min</span><span class="act-stat-lbl">Dauer</span></div>
-        <div class="act-stat"><span class="act-stat-val">85m</span><span class="act-stat-lbl">Höhenmeter</span></div>
-      </div>
-    </div>
+  document.getElementById('statDist').textContent='32';
+  document.getElementById('statActivities').textContent='4';
+  document.getElementById('statReadiness').textContent='78';
+  document.getElementById('activityFeed').innerHTML=`
+    <div class="activity-card"><div class="activity-type">Run · Heute</div><div class="activity-name">Morgen-Tempolauf</div><div class="activity-stats"><div><span class="act-stat-val">8.0 km</span><span class="act-stat-lbl">Distanz</span></div><div><span class="act-stat-val">4:37</span><span class="act-stat-lbl">min/km</span></div><div><span class="act-stat-val">37 min</span><span class="act-stat-lbl">Dauer</span></div><div><span class="act-stat-val">85m</span><span class="act-stat-lbl">Höhenmeter</span></div></div></div>
     <div class="loading">Strava verbinden für Live-Daten</div>`;
 }
+
+function showToast(msg){const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),4000);}
 
 // ─── INIT ─────────────────────────────────────────────────────────────
 async function init() {
   renderPlan(getCurrentWeek());
-
   const params = new URLSearchParams(window.location.search);
   const code = params.get('code');
-
-  if (code) {
-    window.history.replaceState({}, '', window.location.pathname);
-    document.getElementById('connectOverlay').style.display = 'none';
-    document.getElementById('activityFeed').innerHTML = '<div class="loading">Verbinde mit Strava</div>';
+  if(code){
+    window.history.replaceState({},'',window.location.pathname);
+    document.getElementById('connectOverlay').style.display='none';
+    document.getElementById('activityFeed').innerHTML='<div class="loading">Verbinde mit Strava...</div>';
     const token = await exchangeCode(code);
-    if (token) {
-      await loadStravaData(token);
-      showToast('✓ Strava erfolgreich verbunden!');
-    } else {
-      showToast('Fehler beim Verbinden. Bitte erneut versuchen.');
-      loadDemoData();
-    }
+    if(token){await loadStravaData(token);showToast('✓ Strava erfolgreich verbunden!');}
+    else{loadDemoData();}
     return;
   }
-
   const token = await getValidToken();
-  if (token) {
-    await loadStravaData(token);
-  } else if (localStorage.getItem('demo_mode')) {
-    document.getElementById('connectOverlay').style.display = 'none';
-    loadDemoData();
-  }
-}
-
-function showToast(msg) {
-  const t = document.createElement('div');
-  t.className = 'toast';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 4000);
+  if(token){await loadStravaData(token);}
+  else if(localStorage.getItem('demo_mode')){document.getElementById('connectOverlay').style.display='none';loadDemoData();}
 }
 
 init();
